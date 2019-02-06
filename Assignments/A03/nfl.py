@@ -28,6 +28,7 @@ for year in years:
         gamedata[year] = {}
         for sea in season:
                 if sea == "POST":
+                        gamedata[year][sea] = {}
                         url ="http://www.nfl.com/schedules/%s/%s%s" % (year,sea,week)
                         page = scraper.go(url)
                         divs = page.find_all('div',{"class":"schedules-list-content"})
@@ -48,15 +49,9 @@ for year in years:
                                         gameids.append(div['data-gameid'])
                                         gamedata[year][sea][div['data-gameid']] = {}
 
-"""
+
 for game in gameids:
-        gamedata[year][sea][game] = 
         urllib.request.urlretrieve("http://www.nfl.com/liveupdate/game-center/%s/%s_gtd.json"%(game,game),'nfl/'+game+'.json')
 
-sorted(gameids)
-print(gameids)
-print(len(gameids))
 
-"""
 f.write(json.dumps(gamedata))
-print(len(gameids))
