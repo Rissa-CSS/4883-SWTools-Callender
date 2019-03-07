@@ -12,7 +12,7 @@ Description:
     To calculate NFL stats using SQL queries and display the results using PHP.
 
 */
-//Connect to mysql
+
 $mysqli = mysqli_connect($host, $user, $password, $database);
 
 if (mysqli_connect_errno($mysqli)) {
@@ -252,7 +252,7 @@ $response = runQuery($mysqli, $sql);
 // Prints the results in a table 
 echo "\n\nQuestion 10 \n\n";
 echo "Rank \tTeam Name \tWin/Loss \n";
-echo "==============================================================\n";
+echo "===================================================\n";
 $count =33;
 if($response['success']){
     foreach($response['result'] as $row){
@@ -262,3 +262,47 @@ if($response['success']){
         echo "$count \t {$row['club']}  \t\t{$row['WinLossPer']} \n";
     }
 }
+
+//Most common last name
+
+$sql = 'SELECT name FROM `players` group by id';
+
+// Call the function to execute the query
+$response = runQuery($mysqli, $sql);
+
+// Prints the results in a table 
+echo "\n\nQuestion 11 \n\n";
+echo "# \tLast Name \t Occurences \n";
+echo "======================================================\n";
+$count =0;
+#Array for the last names
+$lastnames=[];
+if($response['success']){
+    foreach($response['result'] as $row){
+        
+        #Separates the last name from the first inital
+        $name =  explode(".",$row['name']);
+        #Places last name in a variable
+        $ln = $name[1];
+        #Checks to see if the name in in the array already
+        if (!array_key_exists($ln,$lastnames) )
+            #Creates a key with the last name
+            $lastnames[$ln] = 1;
+        else 
+            #Increments the occurence counter by 1
+            $lastnames[$ln]++;
+    }
+}
+
+# Reverse Sorts the array of lastnames by the # of occurences
+arsort($lastnames);
+#Gets the 5 most common last names
+$mostcommon = array_slice($lastnames, 0, 5, true);
+#Prints the 5 most common last names
+foreach($mostcommon as $name => $occurence){
+    #Increments the counter for the listings
+    $count++;
+    #Prints results
+    echo"$count \t $name \t   $occurence \n";
+}
+
