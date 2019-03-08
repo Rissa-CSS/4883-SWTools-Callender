@@ -12,7 +12,13 @@ Description:
     To calculate NFL stats using SQL queries and display the results using PHP.
 
 */
+//Connect to mysql
+$host = "localhost";             // because we are ON the server
+$user = "***********";        // user name
 
+
+$password = "**********";         // password 
+$database = "******";              // database 
 $mysqli = mysqli_connect($host, $user, $password, $database);
 
 if (mysqli_connect_errno($mysqli)) {
@@ -304,5 +310,27 @@ foreach($mostcommon as $name => $occurence){
     $count++;
     #Prints results
     echo"$count \t $name \t   $occurence \n";
+}
+
+
+//Gives the overall away win %
+
+$sql = 'SELECT count(away_club) as AwayGames ,sum(if(STRCMP( win_type,"away" )=0, 1,0)) as AwayWins, away_club, sum(if(STRCMP( win_type,"away" )=0, 1,0))/count(away_club) as AwayWinPer FROM `games` group by away_club';
+
+// Call the function to execute the query
+$response = runQuery($mysqli, $sql);
+
+// Prints the results in a table 
+echo "\n\nBonus Question 3\n\n";
+echo "# \tTeam \t\tAway % \n";
+echo "=======================================\n";
+$count =0;
+if($response['success']){
+    foreach($response['result'] as $row){
+        //Calculate the ranking of teams
+        $count++;
+        // Prints each row in the result table
+        echo "$count \t {$row['away_club']}  \t\t{$row['AwayWinPer']} \n";
+    }
 }
 
