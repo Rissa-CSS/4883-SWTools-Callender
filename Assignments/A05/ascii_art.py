@@ -25,7 +25,7 @@ def img_to_ascii(**kwargs):
     width = kwargs.get('width',200)
     height = kwargs.get('height',200)
     path = kwargs.get('path',None)
-    
+    sveImg = kwargs.get()
     #Opens the image
     im = Image.open(path)
     #Resizes the Image
@@ -37,7 +37,7 @@ def img_to_ascii(**kwargs):
     #Creates a new blank image
     newImg = Image.new('RGBA',(w,h),(255,255,255,255))
     #Sets the font
-    fnt = ImageFont.truetype('Shailena.ttf',12)
+    fnt = ImageFont.truetype('Shailena.ttf')
     #Draws on new image
     drawOnMe = ImageDraw.Draw(newImg)
     imlist = list(im.getdata())
@@ -84,6 +84,10 @@ def resize(img,width):
 
 if __name__=='__main__':
     #Gets the path of the new image
-    path = 'C:/Users/Chloe/Documents/Users/Clorissa/Computer Science/Software/4883-SWTools-Callender/Assignments/A05/me.jpg'
-    #Calls the function convert the image to ascii    
-    img_to_ascii(path=path,width=200)
+    #path = 'C:/Users/Chloe/Documents/Users/Clorissa/Computer Science/Software/4883-SWTools-Callender/Assignments/A05/me.jpg'
+    path = sys.argv[1]
+    SavedImage = sys.argv[2]
+    fontused = sys.argv[3]
+
+     #Calls the function convert the image to ascii    
+    img_to_ascii(path=path,sveImg=SavedImage,fnt=fontused)
