@@ -99,7 +99,7 @@ if __name__=='__main__':
      else:
         #Default values incase the user did not input any
         path='Images/me.jpg'
-        SavedImage ='output.png'
+        SavedImage ='output_images/output.png'
         FontName = 'Fonts/Shailena.ttf'
         FontSize = 12
 
