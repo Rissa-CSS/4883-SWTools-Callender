@@ -27,7 +27,7 @@ def img_to_ascii(**kwargs):
     FontName=kwargs.get('FontName')
     FontSize=kwargs.get('FontSize')
     path = kwargs.get('path',None)
-    SaveImage = kwargs.get('SaveImage')
+    SavedImage = kwargs.get('SavedImage')
     #Opens the image
     im = Image.open(path)
     #Resizes the Image
@@ -65,7 +65,7 @@ def img_to_ascii(**kwargs):
     #Shows and saves the new image
     
     newImg.show()
-    newImg.save(SaveImage)
+    newImg.save(SavedImage)
 
     
     
@@ -92,7 +92,11 @@ if __name__=='__main__':
         SavedImage = sys.argv[2]
         FontName =sys.argv[3]
         FontSize = sys.argv[4]
-     else
+     else:
+        path='Images/me.jpg'
+        SavedImage ='output.png'
+        FontName = 'Fonts/Shailena.ttf'
+        FontSize = 12
 
      #Calls the function convert the image to ascii    
     img_to_ascii(path=path,SavedImage=SavedImage,FontName=FontName, FontSize=FontSize)
