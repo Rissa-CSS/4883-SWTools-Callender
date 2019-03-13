@@ -96,7 +96,7 @@ if __name__=='__main__':
         SavedImage = sys.argv[2]
         FontName =sys.argv[3]
         FontSize = sys.argv[4]
-     else:
+    else:
         #Default values incase the user did not input any
         path='Images/me.jpg'
         SavedImage ='output_images/output.png'
