@@ -22,12 +22,14 @@ def img_to_ascii(**kwargs):
     
     ascii_chars = [ "W", 'M', 'B', 'R', 'A', '1','f','j','q','n','u', 'a', 'c', ',', '.']
   
+    
     width = kwargs.get('width',200)
     height = kwargs.get('height',200)
     FontName=kwargs.get('FontName')
     FontSize=kwargs.get('FontSize')
     path = kwargs.get('path',None)
     SavedImage = kwargs.get('SavedImage')
+    
     #Opens the image
     im = Image.open(path)
     #Resizes the Image
@@ -87,12 +89,15 @@ def resize(img,width):
 if __name__=='__main__':
     #Gets the path of the new image
     #path = 'C:/Users/Chloe/Documents/Users/Clorissa/Computer Science/Software/4883-SWTools-Callender/Assignments/A05/me.jpg'
+    #Checks if 4 values have been entered: path, output image name, font name and font size
     if(len(sys.argv) ==5):
+        # Gets the values from command line and stores them in the respective variables
         path = sys.argv[1]
         SavedImage = sys.argv[2]
         FontName =sys.argv[3]
         FontSize = sys.argv[4]
      else:
+        #Default values incase the user did not input any
         path='Images/me.jpg'
         SavedImage ='output.png'
         FontName = 'Fonts/Shailena.ttf'
