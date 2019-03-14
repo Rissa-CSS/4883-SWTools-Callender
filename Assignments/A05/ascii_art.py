@@ -90,17 +90,19 @@ if __name__=='__main__':
     #Gets the path of the new image
     #path = 'C:/Users/Chloe/Documents/Users/Clorissa/Computer Science/Software/4883-SWTools-Callender/Assignments/A05/me.jpg'
     #Checks if 4 values have been entered: path, output image name, font name and font size
+
     if(len(sys.argv) ==5):
         # Gets the values from command line and stores them in the respective variables
         path = sys.argv[1]
         SavedImage = sys.argv[2]
         FontName =sys.argv[3]
-        FontSize = sys.argv[4]
+        FontSize = int(sys.argv[4])
+    
     else:
         #Default values incase the user did not input any
-        path='Images/me.jpg'
-        SavedImage ='output_images/output.png'
-        FontName = 'Fonts/Shailena.ttf'
+        path='C:/Users/Chloe/Documents/Users/Clorissa/Computer Science/4883-SWTools-Callender/Assignments/A05/Images/me.jpg'
+        SavedImage ='C:/Users/Chloe/Documents/Users/Clorissa/Computer Science/4883-SWTools-Callender/Assignments/A05/output_images/output.png'
+        FontName = 'C:/Users/Chloe/Documents/Users/Clorissa/Computer Science/4883-SWTools-Callender/Assignments/A05/Fonts/Shailena.ttf'
         FontSize = 12
 
      #Calls the function convert the image to ascii    
