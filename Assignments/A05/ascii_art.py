@@ -100,9 +100,9 @@ if __name__=='__main__':
     
     else:
         #Default values incase the user did not input any
-        path='C:/Users/Chloe/Documents/Users/Clorissa/Computer Science/4883-SWTools-Callender/Assignments/A05/Images/me.jpg'
-        SavedImage ='C:/Users/Chloe/Documents/Users/Clorissa/Computer Science/4883-SWTools-Callender/Assignments/A05/output_images/output.png'
-        FontName = 'C:/Users/Chloe/Documents/Users/Clorissa/Computer Science/4883-SWTools-Callender/Assignments/A05/Fonts/Shailena.ttf'
+        path='4883-SWTools-Callender/Assignments/A05/Images/me.jpg'
+        SavedImage ='4883-SWTools-Callender/Assignments/A05/output_images/output.png'
+        FontName = '4883-SWTools-Callender/Assignments/A05/Fonts/Shailena.ttf'
         FontSize = 12
 
      #Calls the function convert the image to ascii    
