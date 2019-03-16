@@ -1,3 +1,13 @@
+"""
+Course: CMPS 4883
+Assignemt: A07
+Date: 3/15/19
+Github username: Rissa-CSS
+Repo url: https://github.com/Rissa-CSS/4883-SWTools-Callender/tree/master/Assignments/A07
+Name: Clorissa Callender
+Description: 
+    Compares an image and determines the closest image in the flder.
+"""
 # import the necessary packages
 import os
 import sys
@@ -119,12 +129,10 @@ if __name__ == '__main__':
                 #opens the image and converts it to greyscale
                 im =cv2.imread(images)
                 im =cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-                #wid,hei = im.shape
-                #print("Before: " ,wid,hei)
+                #Resize the images to the size of the original
                 im=resize(im,w,h)
-                #wid,hei = im.shape
-                #print("After:", wid,hei)
                 
+                #Calculates mean squared distance of the image to the original image
                 meansqval = mse(original,im)
                 
                 #Checks to see if the mean squared value is more than 0
