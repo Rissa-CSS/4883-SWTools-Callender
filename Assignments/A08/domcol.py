@@ -136,7 +136,7 @@ def get_dominant_colors(img,save_path=None,n=3):
     clt.fit(img)
 
     hist = find_histogram(clt)
-    colors = extract_cluster_color_values(hist, clt.cluster_centers_)
+    colors = extract_cluster_color_values(hist, clt.cluster_centers_,True)
 
     if save_path != None:
         bar = plot_colors(hist, clt.cluster_centers_)
