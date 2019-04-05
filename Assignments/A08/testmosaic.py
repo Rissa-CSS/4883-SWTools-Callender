@@ -51,45 +51,62 @@ def get_color_data(r,g,b,d=3):
 
 
 def colorMatch(col,y):
-    data = openFileJson('./ImgTest.json')
+    data = openFileJson('./Images.json')
     rgb = []
     ClosestImg ={}
     highestper = 0
     imgSelection =[]
+    repimg = []
     for x in range(3):
         rgb.append(y[x])
-
+    #print(rgb)
     for imgname, imgdata in data.items():
         for index, colinfo in imgdata.items():
-            print(colinfo["RGB"])
+            #print(colinfo["RGB"])
+
+            # Checks to see if any image has this exact color
             if set(rgb).issubset(colinfo["RGB"]):
+                # Checks the closest colors dictionary and updates the percentage if it as already there
+                print("YES")
                 if imgname in ClosestImg.keys():
-                    if (ClosestImg[imgname]<colinfo["Percent"]):
+                    if ClosestImg[imgname] > colinfo["Percent"]:
                         ClosestImg[imgname] = colinfo["Percent"]
                 else:
                     ClosestImg[imgname] = colinfo["Percent"]
-    '''for color, percent in ClosestImg.items():
-        print(color, percent)
-        if percent > highestper:
-            highestper = percent
-    for color, percent in ClosestImg.items():
-        if percent == highestper:
-            imgSelection.append(color)
-    print(imgSelection)
-    if len(imgSelection) <1:
-        return ('./emojis/8ball.png')
-    return (random.choice(imgSelection))
-    #print(data)'''
-    return ('./emojis/8ball.png')
+    if not (ClosestImg):
+        for imgname, imgdata in data.items():
+            for index, colinfo in imgdata.items():
+                #print("Col: ",colinfo)
+                if col in colinfo["Colors"].keys():
+                    #print("Col: ",col)
+                    if imgname in ClosestImg.keys():
+                        if ClosestImg[imgname] > colinfo["Percent"]:
+                            ClosestImg[imgname] = colinfo["Percent"]
+                    else:
+                        ClosestImg[imgname] = colinfo["Percent"]
+    if (ClosestImg):
+        for color, percent in ClosestImg.items():
+            #print(color, percent)
+            if percent > highestper:
+                highestper = percent
+        for color, percent in ClosestImg.items():
+            if percent == highestper:
+                imgSelection.append(color)
+        
+        return (random.choice(imgSelection))
+
+    else:
+        return "NULL"
+    
+    
 def pasteInOrder():
         files = glob.glob('./emojis/**/*.png', recursive=True)
-
         originalimg = Image.open('./Untitled.jpg').convert("RGBA")
-
+        
         img = originalimg.load()
-
+        colindex =0
         w,h = originalimg.size
-        print(w,h)
+        #print(w,h)
         im = Image.new("RGBA", (w*64, h*64), "white")
         a=0
         pastey = 0
@@ -97,16 +114,37 @@ def pasteInOrder():
         for x in range(w):
             for y in range(h):
                 c = get_color_data(img[x,y][0],img[x,y][1],img[x,y][2])
-                repimg =colorMatch(c["result"][0]["name"],img[x,y])
-                tmp = Image.open(repimg.replace("\\\\","/")).convert("RGBA")
+                #print(c["result"])
+                repimg = "NULL"
+                domcol = []
+                for colors in c["result"]:
+                    domcol.append( colors["name"])
+                #print(domcol, "  Length: ",len(domcol))
+                #print("")
+                
+                domcolindex  = 0
+                
+                while repimg == "NULL":
+                    
+                    repimg =colorMatch(domcol[domcolindex],img[x,y])
+                    domcolindex+=1
+                    if domcolindex>=len(domcol):
+                        repimg = "./emojis/wolf.png"
+            
+               
+                
+                '''print("")
+                print("")
+                '''
+                tmp = Image.open(repimg.replace("\\","/")).convert("RGBA")
                 im.paste(tmp, (pastex,pastey),tmp)
                 tmp.close()
-
+                
                 pastex += 64
             
             pastex = 0
             pastey += 64
-
+            
         #col = c["result"][0]["name"]
         #print(col)
         #print(c)
@@ -116,8 +154,9 @@ def pasteInOrder():
         #x += 64
         #if x > 1924:
         #x = 0
-        #y += 64'''
+        #y += 64
         im.show()
         im.save("output.png")
+        
         
 pasteInOrder()
