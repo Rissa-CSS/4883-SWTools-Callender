@@ -1,6 +1,15 @@
-#!/usr/local/bin/python3
-import sys
+"""
+Course: CMPS 4883
+Assignemt: A08
+Date: 4/1/19
+Github username: Rissa-CSS
+Repo url: https://github.com/Rissa-CSS/4883-SWTools-Callender/tree/master/Assignments/A08
+Name: Clorissa Callender
+Description: 
+    Creates a mosaic of subimages from a folder entered by the user.
+"""
 
+import sys
 from PIL import Image
 import google_images_download #importing the library
 #from image_package.color_functions import color_distance
@@ -36,7 +45,8 @@ def openFileJson(path):
         return {}
 
 def get_color_data(r,g,b,d=3):
-    """Get color name and hsv from color api.
+    """
+    Get color name and hsv from color api.
     Arguments:
         r -- red   [int]
         g -- green [int]
@@ -67,7 +77,7 @@ def colorMatch(col,y):
             # Checks to see if any image has this exact color
             if set(rgb).issubset(colinfo["RGB"]):
                 # Checks the closest colors dictionary and updates the percentage if it as already there
-                print("YES")
+                #print("YES")
                 if imgname in ClosestImg.keys():
                     if ClosestImg[imgname] > colinfo["Percent"]:
                         ClosestImg[imgname] = colinfo["Percent"]
@@ -101,7 +111,7 @@ def colorMatch(col,y):
     
 def pasteInOrder():
         files = glob.glob('./emojis/**/*.png', recursive=True)
-        originalimg = Image.open('./Untitled.jpg').convert("RGBA")
+        originalimg = Image.open('./emojis/8ball.png').convert("RGBA")
         
         img = originalimg.load()
         colindex =0
@@ -111,10 +121,12 @@ def pasteInOrder():
         a=0
         pastey = 0
         pastex = 0
-        for x in range(w):
-            for y in range(h):
+        
+        
+        for y in range(h):
+            for x in range(w):
                 c = get_color_data(img[x,y][0],img[x,y][1],img[x,y][2])
-                #print(c["result"])
+                print(img[x,y])
                 repimg = "NULL"
                 domcol = []
                 for colors in c["result"]:
@@ -123,25 +135,26 @@ def pasteInOrder():
                 #print("")
                 
                 domcolindex  = 0
-                
+                delta = 0
                 while repimg == "NULL":
                     
-                    repimg =colorMatch(domcol[domcolindex],img[x,y])
-                    domcolindex+=1
-                    if domcolindex>=len(domcol):
-                        repimg = "./emojis/wolf.png"
-            
-               
+                    if domcolindex<=len(domcol):
+                        repimg =colorMatch(domcol[domcolindex],img[x,y])
+                        domcolindex+=1
+                    else:
+                        if img[x,y][0] in range(img[x,y][0]-delta, img[x,y][0]+delta) and img[x,y][1] in range(img[x,y][1]-delta,img[x,y][1]+delta) and img[x,y][2] in range(img[x,y][2]-delta,img[x,y][2]+delta):
+                                newcolors = get_color_data(img[x,y][0],img[x,y][1],img[x,y][2],delta)
+                                for colors in newcolors["result"]:
+                                    repimg = colorMatch((colors["r"],colors["g"],colors["b"]),colors["name"])
+                        delta += 5
                 
-                '''print("")
-                print("")
-                '''
+                
                 tmp = Image.open(repimg.replace("\\","/")).convert("RGBA")
                 im.paste(tmp, (pastex,pastey),tmp)
                 tmp.close()
                 
                 pastex += 64
-            
+            sys.exit()
             pastex = 0
             pastey += 64
             
