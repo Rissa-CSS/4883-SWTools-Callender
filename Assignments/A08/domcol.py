@@ -1,3 +1,15 @@
+"""
+Course: CMPS 4883
+Assignemt: A08
+Date: 4/1/19
+Github username: Rissa-CSS
+Repo url: https://github.com/Rissa-CSS/4883-SWTools-Callender/tree/master/Assignments/A08
+Name: Clorissa Callender
+Description: 
+    Accepts a folder of images and processes it and saves the results in a JSON file.
+    
+"""
+
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -124,8 +136,10 @@ def get_dominant_colors(img,save_path=None,n=3):
 
     # if its string open it
     if isinstance(img,str):
+        print(img)
         if os.path.isfile(img):
             img = cv2.imread(img)
+            
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         else:
             usage("Error: image path not valid")
@@ -164,55 +178,76 @@ def get_dominant_colors(img,save_path=None,n=3):
 
 
 if __name__=='__main__':
-    # path to image to process
-    files = glob.glob('./emojis/**/*.png', recursive=True)
+    #Creates a dictionary for the arguments the users will enter from the command line
+    args = {}
+    files = []
+    #Checks to see if the user enters arguments besides the file name
+    if (len(sys.argv)>1):
+        #Loops through the list of arguments entered after the file name
+        for arg in sys.argv[1:]:
+            #Splits the arguments on the = into a key value pair
+            k,v = arg.split('=')
+            args[k] = v
+    #Searches the dictionary to see if a folder was entered
+    if 'folder' in args:
+        #If the key exists then the folder is set to what the user entered
+        folder = args["folder"]
+    else: 
+        folder = './emojis'
+    #Searches the dictionary to see if a folder was entered
+    if 'outfile' in args:
+        #If the key exists then the folder is set to what the user entered
+        outfile = args["outfile"]
+    else: 
+        outfile = 'Images'
+
+    files = glob.glob('./'+folder+'/**/*.png', recursive=True)
+    #Dictionary that stores the color data for each sub image
     allColors = {}
+
+    #Loops through the images in the folder
     for file in files:
         img = file
-        #print(img)
-    
+       
         # gets a json of dominant colors
-        # if you supply a path (like './lilly_colors_bar.jpg') it will save the color bar there.
-        # it also lets you specify number of clusters if you want
-        #colors1 = get_dominant_colors(img,'./emojis/-1.png')
-
-        # 4 clusters and save image
-        #colors2 = get_dominant_colors(img,'./emojis/-1.png',4)
-        
-        # What you should probably use
         colors = get_dominant_colors(img)
+        # Creates a dictionarty for each image
         allColors[img] = {}
-        #print(colors)
+        
         x=0
+        #Loops through json of color data that is returned
         for info in colors:
-            #print(x, ": ")
+            #Creates a dictionary for all of the colors that are in the image
             allColors[img][x] = {}
             
-
+            #Loops through the dictionary
             for k,v in info.items(): 
-                
+                #Adds the Percentage, RGB, Brightness, and the colors close to the dominant colors
                 allColors[img][x]["Percent"] = info["percent"]
                 allColors[img][x]["RGB"] = info["rgb"]
                 allColors[img][x]["Brightness"] = info["brightness"]
                 allColors[img][x]["Colors"] = {}
                 
+                #Loops through the dominant colors 
                 for result in info["named_data"]["result"]:
-                    #print("Keys: ",named, " Value: ",nameinfo )
+                    # Gets the results of the dominnat colors
                     for named,nameinfo in result.items():
-                        #print("Keys: ",named, " Value: ",nameinfo )
-                        #print(result["name"])
+                        #Checks to see if the color is already in the image's dictionary
                         if result["name"] not in allColors[img][x]["Colors"].keys():
+                            #Creates a dictionary if the color has not been added as yet
                             allColors[img][x]["Colors"][result["name"]] = {}
+                        # Adds the R G B values of the color and the distant from the dominant colors
                         allColors[img][x]["Colors"][result["name"]]["R"] = result["r"]
                         allColors[img][x]["Colors"][result["name"]]["G"] = result["g"]
                         allColors[img][x]["Colors"][result["name"]]["B"] = result["b"]
                         allColors[img][x]["Colors"][result["name"]]["Distance"] = result["dist"]
-                    #print(result)
+                    
 
             x=x+1
-    f = open("Images.json","w")
+    #Opens a JSON file to save the images' color data
+    f = open( outfile + ".json","w")
+    #Dumps the dictionary into the file
     f.write(json.dumps(allColors))
+    # Closes dictionary
     f.close()
-    #print(allColors)
 
-    #2246537024
